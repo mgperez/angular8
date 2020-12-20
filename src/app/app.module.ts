@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CorreoComponent } from './components/correo/correo.component';
 import { ListaCorreosComponent } from './components/lista-correos/lista-correos.component';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { ListaCorreosComponent } from './components/lista-correos/lista-correos.
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
