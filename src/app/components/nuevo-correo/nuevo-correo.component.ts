@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
@@ -10,6 +10,7 @@ export class NuevoCorreoComponent implements OnInit {
 
   nuevoCorreo: FormGroup;
   submitted = false;
+  @Input() correo: any;
 
   constructor(private formBuilder: FormBuilder) {
     // Called first time before the ngOnInit()
@@ -19,6 +20,14 @@ export class NuevoCorreoComponent implements OnInit {
   ngOnInit(): void {
     // Called after the constructor and called  after the first ngOnChanges()
     this.nuevoCorreo = this.createForm(this.formBuilder);
+
+    if(this.correo != undefined){
+      console.log("A",this.correo);
+      this.nuevoCorreo.patchValue({
+        titulo: 'Re: '+ this.correo.titulo,
+        destinatario: this.correo.emisor
+      });
+    }
   }
 
   get formulario(): { [p: string]: AbstractControl } {
