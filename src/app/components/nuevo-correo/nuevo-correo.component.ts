@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
@@ -11,6 +11,7 @@ export class NuevoCorreoComponent implements OnInit {
   nuevoCorreo: FormGroup;
   submitted = false;
   @Input() correo: any;
+  @Output() accionRealizada: EventEmitter<any> = new EventEmitter();
 
   constructor(private formBuilder: FormBuilder) {
     // Called first time before the ngOnInit()
@@ -52,6 +53,7 @@ export class NuevoCorreoComponent implements OnInit {
   onReset(): void {
     this.submitted = false;
     this.nuevoCorreo.reset();
+    this.accionRealizada.emit();
   }
 
   private createForm(formBuilder: FormBuilder) {
