@@ -9,7 +9,7 @@ import {AvisosService} from '../../services/avisos.service';
 export class AvisosComponent implements OnInit {
 
 
-  constructor(private servicioAvisos: AvisosService) {
+  constructor(public servicioAvisos: AvisosService) {
   }
 
   ngOnInit(): void {
