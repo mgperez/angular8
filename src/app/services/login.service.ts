@@ -11,7 +11,7 @@ export class LoginService {
 
   profile: any = undefined;
   tokenUser: string;
-  // userId: string;
+  userId: string;
 
   constructor(private googleAuthService: GoogleAuthService, private ngZone: NgZone) {
     if(this.isUserSignedIn()){
@@ -36,7 +36,7 @@ export class LoginService {
         });
         this.profile = undefined;
         this.tokenUser = undefined;
-        // this.userId = undefined;
+        this.userId = undefined;
       } catch (e) {
         console.error(e);
       }
@@ -49,9 +49,11 @@ export class LoginService {
   }
 
   private setUser(user: GoogleUser): void {
-    // console.log(user);
-    this.profile = user.getBasicProfile();
+    console.log(user);
+    // this.profile = user.getBasicProfile();
+    this.profile = user['xt'];
     console.log(this.profile);
+
     /*console.log('ID: ' + myprofile.getId());
     console.log('Full Name: ' + myprofile.getName());
     console.log('Given Name: ' + myprofile.getGivenName());
@@ -59,19 +61,17 @@ export class LoginService {
     console.log('Image URL: ' + myprofile.getImageUrl());
     console.log('Email: ' + myprofile.getEmail());*/
 
-    this.tokenUser = user.getAuthResponse().access_token;
+    // this.tokenUser = user.getAuthResponse().access_token;
+    this.tokenUser = user['xc'].access_token;
     console.log('access_token: ' + this.tokenUser);
-
 
     /*this.profile = user['w3'];
     this.tokenUser = user['Zi'].access_token;
     this.userId = this.profile['Eea'];*/
-    /*this.profile = user['xt'];
-    console.log('profile: ' + user['xt']);
-    this.tokenUser = user['xc'].access_token;
-    console.log('access_token: ' + this.tokenUser);
+
     this.userId = this.profile.OT;
-    console.log('userId: ' + this.userId);*/
+    // this.userId = this.profile.getId();
+    console.log('userId: ' + this.userId);
   }
 
   private getSessionUser(): any {

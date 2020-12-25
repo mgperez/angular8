@@ -21,12 +21,12 @@ export class LoginComponent implements OnInit {
   }
 
   getNombre(): string {
-    // return this.login.profile.Ad;
-    return this.login.profile.getName();
+    return this.login.profile.Ad;
+    // return this.login.profile.getName();
   }
 
   getEmail(): string {
-    // return this.login.profile.du;
-    return this.login.profile.getEmail();
+    return this.login.profile.du;
+    // return this.login.profile.getEmail();
   }
 }

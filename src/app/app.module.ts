@@ -10,6 +10,7 @@ import { NuevoCorreoComponent } from './components/nuevo-correo/nuevo-correo.com
 import { AvisosComponent } from './components/avisos/avisos.component';
 import { CorreosRecibidosComponent } from './views/correos-recibidos/correos-recibidos.component';
 import { LoginComponent } from './components/login/login.component';
+import { HttpClientModule } from '@angular/common/http';
 import {
   GoogleApiModule,
   GoogleApiService,
@@ -18,6 +19,7 @@ import {
   NG_GAPI_CONFIG,
   GoogleApiConfig
 } from "ng-gapi";
+import { ListaCorreosGmailComponent } from './components/lista-correos-gmail/lista-correos-gmail.component';
 
 let gapiClientConfig: NgGapiClientConfig = {
   client_id: "374443698323-pfan501olhgle37c2pa0rtna4o9c9052.apps.googleusercontent.com",
@@ -42,13 +44,15 @@ let gapiClientConfig: NgGapiClientConfig = {
     NuevoCorreoComponent,
     AvisosComponent,
     CorreosRecibidosComponent,
-    LoginComponent
+    LoginComponent,
+    ListaCorreosGmailComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule,
     GoogleApiModule.forRoot({
       provide: NG_GAPI_CONFIG,
       useValue: gapiClientConfig

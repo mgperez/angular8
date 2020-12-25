@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AvisosService} from '../../services/avisos.service';
+import {GmailService} from '../../services/gmail.service';
 
 @Component({
   selector: 'app-nuevo-correo',
@@ -14,7 +15,7 @@ export class NuevoCorreoComponent implements OnInit {
   @Input() correo: any;
   @Output() accionRealizada: EventEmitter<any> = new EventEmitter();
 
-  constructor(private formBuilder: FormBuilder, private servicioAvisos: AvisosService) {
+  constructor(private formBuilder: FormBuilder, private servicioAvisos: AvisosService, private gmail: GmailService) {
     // Called first time before the ngOnInit()
     // this.nuevoCorreo = this.createForm(formBuilder);
   }
@@ -24,7 +25,7 @@ export class NuevoCorreoComponent implements OnInit {
     this.nuevoCorreo = this.createForm(this.formBuilder);
 
     if(this.correo != undefined){
-      console.log("A",this.correo);
+      // console.log("A",this.correo);
       this.nuevoCorreo.patchValue({
         titulo: 'Re: '+ this.correo.titulo,
         destinatario: this.correo.emisor
@@ -44,12 +45,26 @@ export class NuevoCorreoComponent implements OnInit {
     }
 
     let correo = this.nuevoCorreo.value;
-    correo.leido = false;
-    correo.emisor = 'correoEmisor1@openWebinar.inv';
+    /*correo.leido = false;
+    correo.emisor = 'correoEmisor1@openWebinar.inv';*/
+
+    const texto = correo.cuerpo;
+    const destinatario = correo.destinatario;
+    const asunto = correo.titulo;
 
     // alert('Correo Enviado \nEliminamos el formulario');
     this.onReset();
-    this.servicioAvisos.showMenssage(`Correo enviado a ${correo.emisor}`);
+    // this.servicioAvisos.showMenssage(`Correo enviado a ${correo.emisor}`);
+
+    this.gmail.sendMessage(texto, destinatario, asunto).subscribe(
+      (response) => {
+        console.log("respuesta envio", response);
+        this.servicioAvisos.showMenssage(`Correo enviado a ${correo.destinatario}`);
+      },
+      (error) => {
+        this.servicioAvisos.showMenssage(`Fallo en el envio`);
+      }
+    );
   }
 
   onReset(): void {
