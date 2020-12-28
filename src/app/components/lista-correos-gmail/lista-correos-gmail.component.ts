@@ -1,22 +1,37 @@
 import { Component, OnInit } from '@angular/core';
 import {GmailService} from '../../services/gmail.service';
+import {Router} from '@angular/router';
+import { trigger, state, transition, style, animate } from '@angular/animations';
+import {MatTableDataSource} from '@angular/material/table';
+import {AvisosService} from '../../services/avisos.service';
 
 
 @Component({
   selector: 'app-lista-correos-gmail',
   templateUrl: './lista-correos-gmail.component.html',
-  styleUrls: ['./lista-correos-gmail.component.scss']
+  styleUrls: ['./lista-correos-gmail.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class ListaCorreosGmailComponent implements OnInit {
 
   correos: any[];
+  columnsToDisplay: string[] = ['Emisor', 'Asunto', 'Acciones'];
+  displayedColumns: string[] = ['emisor', 'titulo', 'id'];
+  dataSource = new MatTableDataSource<any>();
+  expandedElement: any | null;
 
-  constructor(private gmail: GmailService) {
+  constructor(private gmail: GmailService, private router: Router, private servicioAvisos: AvisosService) {
     this.correos = [];
   }
 
   ngOnInit(): void {
-    // this.getRecibidos();
+    this.getRecibidos();
   }
 
   clickResponder(correo: any): void {
@@ -24,7 +39,8 @@ export class ListaCorreosGmailComponent implements OnInit {
   }
 
   accionRespuestaRapida(correo: any): void {
-    correo.responder = false;
+    // correo.responder = false;
+    this.expandedElement = null;
   }
 
   public getRecibidos(): void {
@@ -53,13 +69,20 @@ export class ListaCorreosGmailComponent implements OnInit {
           titulo: subject? subject.value : undefined,
         };
         this.correos.push(mensage);
+        this.dataSource.data.push(mensage);
+        this.dataSource._updateChangeSubscription();
       },
       (error) => this.error(error)
     );
   }
 
   error(error): void {
-    console.warn("ERROR");
+    // console.warn("ERROR");
+    this.servicioAvisos.showMenssage("Se ha producido un error", 'Error');
+  }
+
+  verDetalle(correo): void {
+    this.router.navigate(['/mail', {correo: JSON.stringify(correo)}]);
   }
 
 }

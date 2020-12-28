@@ -1,32 +1,22 @@
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AvisosService {
+  visible: any;
+  mensaje: any;
 
-  mensaje: string;
-  visible: boolean;
+  constructor(private _snackBar: MatSnackBar) {}
 
-  constructor() {
-    this.mensaje = '';
-    this.visible = false;
-  }
-
-  showMenssage(mensaje: string): void{
-    this.mensaje = mensaje;
-    this.visible = true;
-    this.waitToHide();
-  }
-
-  hideMenssage(): void{
-    this.visible = false;
-    this.mensaje = '';
-  }
-
-  waitToHide(): void{
-    setTimeout(() => {
-      this.hideMenssage();
-    }, 2000);
+  showMenssage(mensaje: string, tipo?: string): void{
+    let tipoMensaje = 'Información';
+    if(tipo){
+      tipoMensaje = tipo;
+    }
+    this._snackBar.open(mensaje, tipoMensaje, {
+      duration: 2000,
+    });
   }
 }
